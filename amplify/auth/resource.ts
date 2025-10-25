@@ -13,8 +13,17 @@ export const auth = defineAuth({
         clientSecret: secret('GOOGLE_CLIENT_SECRET'),
         scopes: ['email', 'profile']
       },
-      callbackUrls: ['myapp://callback'],
-      logoutUrls: ['myapp://logout'],
+      callbackUrls: ['https://chalrahiauth.auth.ap-south-1.amazoncognito.com/callback'],
+      logoutUrls: ['https://chalrahiauth.auth.ap-south-1.amazoncognito.com/logout'],
     }
+  },
+  senders: {
+    email: {
+      // configure using the email registered and verified in Amazon SES
+      fromEmail: "deepak@raftinnovations.com",
+            
+      fromName: "Chalrahi Support",
+      replyTo: "deepak@raftinnovations.com"
+    },
   },
 });
