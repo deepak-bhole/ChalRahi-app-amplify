@@ -13,8 +13,8 @@ export const auth = defineAuth({
         clientSecret: secret('GOOGLE_CLIENT_SECRET'),
         scopes: ['email', 'profile']
       },
-      callbackUrls: ['https://raftinnovations.com/callback'],
-      logoutUrls: ['https://raftinnovations.com/logout'],
+      callbackUrls: ['myapp://callback'],
+      logoutUrls: ['myapp://logout'],
     }
   },  
   senders: {
