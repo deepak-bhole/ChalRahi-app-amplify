@@ -7,5 +7,8 @@ export const storage = defineStorage({
       allow.entity('identity').to(['read', 'write', 'delete']),
       allow.authenticated.to(['read'])
     ],
+    'clubCoverPhotos/{cognitoIdentityId}/{clubId}/*': [
+        allow.entity('identity').to(['read', 'write', 'delete'])
+    ],
   }),
 });

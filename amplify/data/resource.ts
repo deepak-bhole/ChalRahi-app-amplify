@@ -46,6 +46,8 @@ const schema = a.schema({
     description: a.string(),
     location: a.string(),
     coverImageKey: a.string(),
+
+    isPrivate: a.boolean().default(false),
     
     members: a.hasMany('ClubMember', 'clubId'),
     events: a.hasMany('Event', 'clubId'),
@@ -68,6 +70,9 @@ const schema = a.schema({
     club: a.belongsTo('Club', 'clubId'),
     user: a.belongsTo('User', 'userId'),
     role: a.enum(['MEMBER', 'ADMIN']),
+
+    status: a.enum(['PENDING', 'APPROVED']),
+    
   }).authorization(allow => [
     allow.owner().to(['update', 'delete']), 
     allow.authenticated().to(['read'])
