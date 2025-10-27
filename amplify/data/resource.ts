@@ -75,7 +75,7 @@ const schema = a.schema({
     
   }).authorization(allow => [
     allow.owner().to(['update', 'delete']), 
-    allow.authenticated().to(['read'])
+    allow.authenticated().to(['read', 'create'])
   ]),
 
   Event: a.model({
