@@ -52,14 +52,12 @@ const schema = a.schema({
     club: a.belongsTo('Club', 'clubId'),
     user: a.belongsTo('User', 'userId'),
     role: a.enum(['MEMBER', 'ADMIN']),
-    owners: a.string().array(),
 
     status: a.enum(['PENDING', 'APPROVED']),
     
   }).authorization(allow => [
-    allow.owner(), 
-    allow.ownersDefinedIn('owners').to(['update', 'delete']), 
-    allow.authenticated().to(['read', 'create'])
+    allow.owner().to(['update', 'delete']), 
+    allow.authenticated().to(['read', 'create', 'update'])
   ]),
 
   Event: a.model({
