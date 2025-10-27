@@ -10,5 +10,21 @@ export const storage = defineStorage({
     'clubCoverPhotos/{cognitoIdentityId}/{clubId}/*': [
         allow.entity('identity').to(['read', 'write', 'delete'])
     ],
+    'clubProfilePhotos/{cognitoIdentityId}/{clubId}/*': [
+        allow.entity('identity').to(['read', 'write', 'delete']),
+        allow.authenticated.to(['read'])
+    ],
+    'eventCoverPhotos/{cognitoIdentityId}/{eventId}/*': [
+        allow.entity('identity').to(['read', 'write', 'delete']),
+        allow.authenticated.to(['read'])
+    ],
+    'placeMapSnaps/{cognitoIdentityId}/{placeId}/*': [
+      allow.entity('identity').to(['read', 'write', 'delete']),
+      allow.authenticated.to(['read'])
+    ],
+    'placeCoverPhotos/{cognitoIdentityId}/{placeId}/*': [
+      allow.entity('identity').to(['read', 'write', 'delete']),
+      allow.authenticated.to(['read'])
+    ]
   }),
 });
