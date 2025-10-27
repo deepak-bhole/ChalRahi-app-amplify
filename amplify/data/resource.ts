@@ -64,7 +64,10 @@ const schema = a.schema({
 
     title: a.string().required(),
     description: a.string(),
-    dateTime: a.datetime().required(),
+  
+    startDateTime: a.datetime().required(),
+    endDateTime: a.datetime(),
+
     meetingPoint: a.string(),
     
     clubId: a.id().required(),
@@ -117,7 +120,7 @@ const schema = a.schema({
     
     activityId: a.id().required(),
     activity: a.belongsTo('Activity', 'activityId')
-    
+
   }).authorization(allow => [allow.owner()]),
 });
 
