@@ -7,20 +7,25 @@ export const storage = defineStorage({
       allow.entity('identity').to(['read', 'write', 'delete']),
       allow.authenticated.to(['read'])
     ],
-    'clubCoverPhotos/{cognitoIdentityId}/{clubId}/*': [
-        allow.authenticated.to(['read', 'write', 'delete']),
+    'clubCoverPhotos/{entity_id}/*': [
+        allow.entity('identity').to(['read', 'write', 'delete']),
+        allow.authenticated.to(['read'])
     ],
-    'clubProfilePhotos/{cognitoIdentityId}/{clubId}/*': [
-        allow.authenticated.to(['read', 'write', 'delete']),
+    'clubProfilePhotos/{entity_id}/*': [
+        allow.entity('identity').to(['read', 'write', 'delete']),
+        allow.authenticated.to(['read'])
     ],
-    'eventCoverPhotos/{cognitoIdentityId}/{eventId}/*': [
-        allow.authenticated.to(['read', 'write', 'delete']),
+    'eventCoverPhotos/{entity_id}/*': [
+        allow.entity('identity').to(['read', 'write', 'delete']),
+        allow.authenticated.to(['read'])
     ],
-    'placeMapSnaps/{cognitoIdentityId}/{placeId}/*': [
-      allow.authenticated.to(['read', 'write', 'delete']),
+    'placeMapSnaps/{entity_id}/*': [
+      allow.entity('identity').to(['read', 'write', 'delete']),
+      allow.authenticated.to(['read'])
     ],
-    'placeCoverPhotos/{cognitoIdentityId}/{placeId}/*': [
-      allow.authenticated.to(['read', 'write', 'delete']),
+    'placeCoverPhotos/{entity_id}/*': [
+      allow.entity('identity').to(['read', 'write', 'delete']),
+      allow.authenticated.to(['read'])
     ]
   }),
 });
