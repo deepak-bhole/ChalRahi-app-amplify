@@ -156,8 +156,8 @@ const schema = a.schema({
       reviews: a.hasMany("Review", "placeId"), // Link to reviews
     })
     .authorization((allow) => [
-      allow.authenticated().to(["read"]),
-      allow.groups(["Admins"]).to(["create", "update", "delete"]),
+      allow.owner().to(['update', 'delete']), 
+    allow.authenticated().to(['read', 'create', 'update'])
     ]),
 
   EventPlace: a
@@ -169,8 +169,8 @@ const schema = a.schema({
       event: a.belongsTo("Event", "eventId"),
     })
     .authorization((allow) => [
-      allow.authenticated().to(["read"]),
-      allow.owner().to(["create", "update", "delete"]), 
+      allow.owner().to(['update', 'delete']), 
+      allow.authenticated().to(['read', 'create', 'update'])
     ]),
 
   Activity: a.model({
