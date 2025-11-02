@@ -1,5 +1,8 @@
 import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
 
+const PlaceDifficulty = a.enum(["EASY", "MODERATE", "HARD"]);
+const PlaceRouteType = a.enum(["OUT_AND_BACK", "CIRCULAR", "POINT_TO_POINT"]);
+
 const schema = a.schema({
   User: a.model({
 
@@ -17,6 +20,7 @@ const schema = a.schema({
       rsvps: a.hasMany('EventRSVP', 'userId'),
       following: a.hasMany("Follow", "followerId"),
       followers: a.hasMany("Follow", "followedId"),
+      reviews: a.hasMany("Review", "userId"),
 
     })
     .authorization((allow) => [
@@ -124,18 +128,32 @@ const schema = a.schema({
 
   Place: a
     .model({
-
       id: a.id().required(),
       name: a.string().required(),
       description: a.string(),
-      type: a
-          .enum(["RUNNING", "HIKING", "CYCLING", "WALKING", "OTHER"]),
-      location: a.string(),
-      mapSnapshotKey: a.string(), 
+      type: a.enum(["RUNNING", "HIKING", "CYCLING", "WALKING", "OTHER"]),
+      location: a.string(), // e.g., "Velhe, Maharashtra, India"
+      mapSnapshotKey: a.string(),
       coverImages: a.string().array(),
-      details: a.string(),
+      details: a.string(), // Long-form details
       relatedEvents: a.hasMany("EventPlace", "placeId"),
 
+      // --- NEW FIELDS ---
+      rating: a.float().default(0),
+      reviewCount: a.integer().default(0),
+      activityCount: a.integer().default(0),
+      length: a.float(), // in km
+      elevationGain: a.float(), // in meters
+      estimatedTime: a.string(), // e.g., "2h 30m"
+      difficulty: PlaceDifficulty,
+      routeType: PlaceRouteType,
+      attractions: a.string().array(), // e.g., ["Epic views", "Wildflowers"]
+      suitability: a.string().array(), // e.g., ["Dog-friendly"]
+      contactName: a.string(),
+      contactPhone: a.string(),
+      contactEmail: a.string(),
+      aiReviewSummary: a.string(), // For "Trailgoers are saying..."
+      reviews: a.hasMany("Review", "placeId"), // Link to reviews
     })
     .authorization((allow) => [
       allow.authenticated().to(["read"]),
@@ -185,6 +203,22 @@ const schema = a.schema({
     activity: a.belongsTo('Activity', 'activityId')
 
   }).authorization(allow => [allow.owner()]),
+
+  Review: a
+    .model({
+      id: a.id().required(),
+      placeId: a.id().required(),
+      place: a.belongsTo("Place", "placeId"),
+      userId: a.id().required(),
+      user: a.belongsTo("User", "userId"),
+      rating: a.integer().required(), // 1-5
+      comment: a.string(),
+    })
+    .authorization((allow) => [
+      allow.owner(),
+      allow.authenticated().to(["read"]),
+    ]),
+    
 });
 
 
