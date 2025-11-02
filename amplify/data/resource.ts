@@ -154,6 +154,7 @@ const schema = a.schema({
       contactEmail: a.string(),
       aiReviewSummary: a.string(), // For "Trailgoers are saying..."
       reviews: a.hasMany("Review", "placeId"), // Link to reviews
+      activities: a.hasMany("Activity", "placeId"), // Link to activities
     })
     .authorization((allow) => [
       allow.owner().to(['update', 'delete']), 
@@ -185,7 +186,9 @@ const schema = a.schema({
     eventId: a.id(),
     event: a.belongsTo('Event', 'eventId'),
     userId: a.id().required(),
-    user: a.belongsTo('User', 'userId'),    
+    user: a.belongsTo('User', 'userId'),
+    placeId: a.id(),
+    place: a.belongsTo("Place", "placeId"),
     
   }).authorization(allow => [
     allow.owner(),

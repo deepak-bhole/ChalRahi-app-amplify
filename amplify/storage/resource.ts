@@ -26,6 +26,14 @@ export const storage = defineStorage({
     'placeCoverPhotos/{entity_id}/*': [
       allow.entity('identity').to(['read', 'write', 'delete']),
       allow.authenticated.to(['read'])
+    ],
+    'gpxFiles/{entity_id}/*': [
+      allow.entity('identity').to(['read', 'write', 'delete']),
+      allow.authenticated.to(['read'])
+    ],
+    'media/{entity_id}/*': [
+      allow.entity('identity').to(['read', 'write', 'delete']),
+      allow.authenticated.to(['read'])
     ]
   }),
 });
