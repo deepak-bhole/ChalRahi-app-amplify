@@ -21,6 +21,7 @@ const schema = a.schema({
       following: a.hasMany("Follow", "followerId"),
       followers: a.hasMany("Follow", "followedId"),
       reviews: a.hasMany("Review", "userId"),
+      collections: a.hasMany("Collection", "userId"),
 
     })
     .authorization((allow) => [
@@ -132,33 +133,31 @@ const schema = a.schema({
       name: a.string().required(),
       description: a.string(),
       type: a.enum(["RUNNING", "HIKING", "CYCLING", "WALKING", "OTHER"]),
-      location: a.string(), // e.g., "Velhe, Maharashtra, India"
+      location: a.string(),
       mapSnapshotKey: a.string(),
       coverImages: a.string().array(),
-      details: a.string(), // Long-form details
+      details: a.string(), 
       relatedEvents: a.hasMany("EventPlace", "placeId"),
-
-      // --- NEW FIELDS ---
       rating: a.float().default(0),
       reviewCount: a.integer().default(0),
       activityCount: a.integer().default(0),
-      length: a.float(), // in km
-      elevationGain: a.float(), // in meters
-      estimatedTime: a.string(), // e.g., "2h 30m"
+      length: a.float(),
+      elevationGain: a.float(), 
+      estimatedTime: a.string(), 
       difficulty: PlaceDifficulty,
       routeType: PlaceRouteType,
-      attractions: a.string().array(), // e.g., ["Epic views", "Wildflowers"]
-      suitability: a.string().array(), // e.g., ["Dog-friendly"]
+      attractions: a.string().array(), 
+      suitability: a.string().array(), 
       contactName: a.string(),
       contactPhone: a.string(),
       contactEmail: a.string(),
-      aiReviewSummary: a.string(), // For "Trailgoers are saying..."
-      reviews: a.hasMany("Review", "placeId"), // Link to reviews
-      activities: a.hasMany("Activity", "placeId"), // Link to activities
+      aiReviewSummary: a.string(), 
+      reviews: a.hasMany("Review", "placeId"), 
+      activities: a.hasMany("Activity", "placeId"), 
     })
     .authorization((allow) => [
       allow.owner().to(['update', 'delete']), 
-    allow.authenticated().to(['read', 'create', 'update'])
+      allow.authenticated().to(['read', 'create', 'update'])
     ]),
 
   EventPlace: a
@@ -189,10 +188,41 @@ const schema = a.schema({
     user: a.belongsTo('User', 'userId'),
     placeId: a.id(),
     place: a.belongsTo("Place", "placeId"),
+    collections: a.hasMany('ActivityCollection', "activityId" ), 
     
   }).authorization(allow => [
     allow.owner(),
     allow.authenticated().to(['read']) 
+  ]),
+
+  Collection: a.model({
+    id: a.id().required(),
+    title: a.string().required(),
+    description: a.string(),
+    userId: a.id().required(),
+    user: a.belongsTo("User", "userId"),
+    coverImageKey: a.string(),
+    mapSnapshotKey: a.string(),
+    totalDistance: a.float(),
+    totalDuration: a.integer(), 
+    totalElevationGain: a.float(),
+    activities: a.hasMany('ActivityCollection', "collectionId" ),
+  })
+  .authorization((allow) => [
+    allow.owner().to(['update', 'delete']), 
+    allow.authenticated().to(['read', 'create', 'update'])
+  ]),
+
+  ActivityCollection: a.model({
+        
+    activityId: a.id().required(),
+    collectionId: a.id().required(),
+    activity: a.belongsTo('Activity', 'activityId'),
+    collection: a.belongsTo('Collection', 'collectionId'),
+    
+  }).authorization(allow => [
+    allow.owner().to(['update', 'delete']), 
+    allow.authenticated().to(['read', 'create', 'update'])
   ]),
 
   Media: a.model({
@@ -214,7 +244,7 @@ const schema = a.schema({
       place: a.belongsTo("Place", "placeId"),
       userId: a.id().required(),
       user: a.belongsTo("User", "userId"),
-      rating: a.integer().required(), // 1-5
+      rating: a.integer().required(),
       comment: a.string(),
     })
     .authorization((allow) => [
